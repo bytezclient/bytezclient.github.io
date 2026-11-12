@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BYTEZ | Minecraft Client</title>
+<meta name="description" content="BYTEZ is a modern Minecraft client and launcher: versions, mods, customization, friends and server discovery in one place.">
+<meta property="og:title" content="BYTEZ | Minecraft Client">
+<meta property="og:description" content="Play. Connect. Customize.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23000'/%3E%3Cpath fill='%23fff' fill-rule='evenodd' d='M6 4h6.5a4.2 4.2 0 0 1 2.6 7.5A4.4 4.4 0 0 1 13 20H6zM9.5 7.2v3h3a1.5 1.5 0 0 0 0-3zm0 6.3v3.3h3.3a1.65 1.65 0 0 0 0-3.3z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--bg2:#0b0b0b;--card:#111;--el:#1a1a1a;--tx:#fff;--tx2:#a3a3a3;--tx3:#6e6e6e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.26);--r:14px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:radial-gradient(800px 480px at 50% 0,rgba(255,255,255,.07),transparent) no-repeat,var(--bg);color:var(--tx);font:400 16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:6px}
+.w{max-width:1140px;margin:0 auto;padding:0 24px}
+section{padding:100px 0}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:14px}
+h1,h2{font-weight:800;letter-spacing:-.04em;line-height:1.02}
+h1{font-size:clamp(46px,8.5vw,92px)}h2{font-size:clamp(32px,5vw,54px)}
+h3{font-size:18px;font-weight:650;letter-spacing:-.01em}
+.sub{color:var(--tx2);font-size:18px;max-width:560px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:12px;font:600 15px Inter,sans-serif;border:1px solid var(--bd);background:rgba(255,255,255,.03);color:#fff;cursor:pointer;transition:.25s}
+.btn:hover{border-color:var(--bd2);background:var(--el)}
+.btn.p{background:#fff;color:#000;border-color:#fff;box-shadow:inset 0 1px 0 #fff,0 8px 30px -8px rgba(255,255,255,.3)}
+.btn.p:hover{background:#e8e8e8;transform:translateY(-2px)}
+.btn[disabled],.btn[aria-disabled=true]{opacity:.45;cursor:not-allowed;pointer-events:none}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.ct{text-align:center}.ct .sub,.ct .row{margin-inline:auto;justify-content:center}
+/* announcement + nav */
+#ab{background:var(--el);border-bottom:1px solid var(--bd);font-size:13px;text-align:center;padding:9px 40px;position:relative;color:var(--tx2)}
+#ab a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+#ab button{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--tx2);font-size:18px;cursor:pointer;padding:4px 8px}
+header{position:sticky;top:0;z-index:50;transition:.3s;border-bottom:1px solid transparent}
+header.s{background:rgba(5,5,5,.78);backdrop-filter:blur(16px);border-color:var(--bd)}
+.nb{display:flex;align-items:center;justify-content:space-between;height:66px;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.16em}
+.logo svg{width:24px;height:24px}
+.nl{display:flex;gap:26px}
+.nl a{font-size:14px;font-weight:500;color:var(--tx2);transition:.2s;position:relative}
+.nl a:hover{color:#fff}
+.nl a:after{content:"";position:absolute;left:0;bottom:-5px;height:1px;width:100%;background:#fff;transform:scaleX(0);transform-origin:left;transition:.3s}.nl a:hover:after{transform:scaleX(1)}
+.nr{display:flex;gap:10px;align-items:center}
+.ib{width:40px;height:40px;border-radius:10px;border:1px solid var(--bd);display:grid;place-items:center;transition:.2s;background:none;color:#fff;cursor:pointer}
+.ib:hover{border-color:var(--bd2);background:var(--el)}.ib svg{width:18px;height:18px;fill:currentColor}
+.sm{padding:9px 18px;font-size:14px}
+#bg{display:none}
+#mm{position:fixed;inset:0;z-index:40;background:rgba(5,5,5,.98);padding:130px 24px 24px;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateY(-8px);transition:.3s}
+#mm.o{opacity:1;pointer-events:auto;transform:none}
+#mm a{font-size:24px;font-weight:700;padding:12px 0;border-bottom:1px solid var(--bd)}
+/* hero */
+.hero{padding:90px 0 40px;text-align:center}
+.chip{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--bd2);border-radius:99px;padding:6px 16px;font-size:12px;letter-spacing:.16em;color:var(--tx2);margin-bottom:26px}
+.dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pg 2s infinite}
+@keyframes pg{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}70%,100%{box-shadow:0 0 0 9px transparent}}
+.hero .sub{margin-inline:auto;margin-bottom:34px}
+.hero .row{justify-content:center}
+.fine{margin-top:20px;font-size:13px;color:var(--tx3)}
+.in>*{opacity:0;transform:translateY(20px);animation:up .8s cubic-bezier(.2,.7,.2,1) forwards}
+.in>:nth-child(2){animation-delay:.1s}.in>:nth-child(3){animation-delay:.2s}.in>:nth-child(4){animation-delay:.3s}.in>:nth-child(5){animation-delay:.4s}
+@keyframes up{to{opacity:1;transform:none}}
+/* showcase */
+.show{margin:64px auto 0;max-width:1000px}
+.stage{display:grid;border:1px solid var(--bd);border-radius:18px;background:var(--bg2);padding:10px;box-shadow:0 50px 100px -30px rgba(255,255,255,.12),0 40px 90px rgba(0,0,0,.7)}
+.slide{grid-area:1/1;opacity:0;transform:scale(.985);transition:.6s;pointer-events:none;text-align:left}
+.slide.a{opacity:1;transform:none;pointer-events:auto}
+.win{background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;height:100%}
+.tb{display:flex;gap:6px;padding:11px 14px;background:var(--bg2);border-bottom:1px solid var(--bd);align-items:center;font-size:11px;letter-spacing:.14em;color:var(--tx3)}
+.tb b{width:10px;height:10px;border-radius:50%;background:#333}.tb span{margin-left:10px}
+.app{display:grid;grid-template-columns:150px 1fr;min-height:360px}
+.sb{background:var(--bg2);border-right:1px solid var(--bd);padding:14px 10px;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--tx2)}
+.sb div{padding:8px 10px;border-radius:8px;display:flex;gap:9px;align-items:center}.sb .a{background:var(--el);color:#fff}
+.sb svg,.ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mn{padding:20px;display:flex;flex-direction:column;gap:10px}
+.mr{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:var(--el);border:1px solid var(--bd);border-radius:10px;font-size:14px;transition:.25s}
+.mr:hover{border-color:var(--bd2)}.mr small{color:var(--tx3);display:block;font-size:12px}.mr.sel{border-color:#fff}
+.tag{font-size:11px;padding:3px 10px;border-radius:99px;border:1px solid var(--bd2);color:var(--tx2);white-space:nowrap}.tag.w2{background:#fff;color:#000;border-color:#fff;font-weight:600}
+.ban{border-radius:10px;border:1px solid var(--bd);padding:18px;min-height:96px;background:radial-gradient(120% 140% at 85% 0,rgba(255,255,255,.14),transparent),var(--el)}
+.play{background:#fff;color:#000;text-align:center;padding:13px;border-radius:10px;font-weight:800;letter-spacing:.16em;font-size:13px;margin-top:auto}
+.game{min-height:392px;position:relative;border-radius:12px;overflow:hidden;background:linear-gradient(#1b232d 0 52%,#262a2e 52% 60%,#1c1f22 60%);border:1px solid var(--bd)}
+.game:before{content:"";position:absolute;inset:auto 0 40% 0;height:22%;background:#101418;clip-path:polygon(0 100%,0 60%,10% 60%,10% 30%,22% 30%,22% 55%,36% 55%,36% 10%,52% 10%,52% 45%,68% 45%,68% 25%,84% 25%,84% 60%,100% 60%,100% 100%)}
+.hud{position:absolute;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:6px 10px;font-size:12px;font-variant-numeric:tabular-nums;transition:.2s}
+.hud:hover{border-color:#fff;box-shadow:0 0 0 1px #fff}
+.keys{display:grid;grid-template-columns:repeat(3,26px);gap:3px}.keys i{height:26px;border:1px solid rgba(255,255,255,.3);border-radius:4px;display:grid;place-items:center;font:600 11px Inter;font-style:normal}.keys i.on{background:#fff;color:#000}
+.hot{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:3px}.hot i{width:30px;height:30px;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.45)}.hot i:first-child{border-color:#fff}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.dots button{width:28px;height:4px;border-radius:4px;border:0;background:var(--el);cursor:pointer;transition:.3s;padding:0}.dots button.a{background:#fff;width:44px}
+.cap{margin-top:10px;font-size:12px;color:var(--tx3);letter-spacing:.06em}
+/* facts */
+.facts{border-block:1px solid var(--bd);background:var(--bg2);padding:0}
+.facts .w{display:grid;grid-template-columns:repeat(4,1fr)}
+.fc{padding:34px 20px;border-left:1px solid var(--bd)}.fc:first-child{border:0;padding-left:0}
+.fc b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em}.fc small{color:var(--tx3);font-size:13px}
+/* cards */
+.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.card{position:relative;overflow:hidden;padding:28px;border-radius:var(--r);border:1px solid var(--bd);background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--card);transition:.3s}
+.card:hover{transform:translateY(-4px);border-color:var(--bd2)}
+.card:before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0),rgba(255,255,255,.08),transparent 60%);opacity:0;transition:.3s;pointer-events:none}.card:hover:before{opacity:1}
+.card>*{position:relative}
+.card p{color:var(--tx2);font-size:15px;margin-top:8px}
+.ic{width:44px;height:44px;border-radius:12px;background:var(--el);border:1px solid var(--bd);display:grid;place-items:center;margin-bottom:18px;transition:.3s}.card:hover .ic{transform:rotate(-6deg)}
+.sp{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
+.bg2{background:var(--bg2);border-block:1px solid var(--bd)}
+.bar{margin-top:14px}.bar div{display:flex;justify-content:space-between;font-size:14px;color:var(--tx2);margin-bottom:6px}
+.bar i{display:block;height:10px;border-radius:6px;background:var(--el);border:1px solid var(--bd);overflow:hidden;position:relative}
+.bar i:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transform:translateX(-100%);animation:sh 2.4s infinite}
+@keyframes sh{to{transform:translateX(100%)}}
+.note{border:1px solid var(--bd2);background:var(--card);border-radius:var(--r);padding:14px 18px;color:var(--tx2);font-size:14px;margin-top:22px}
+.caps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+.cape{aspect-ratio:10/15;border-radius:10px;border:1px solid var(--bd);position:relative;overflow:hidden;display:grid;place-items:center;transition:.3s}
+.cape:hover{transform:translateY(-5px);border-color:var(--bd2)}
+.cape svg{width:34%;opacity:.85}.cape span{position:absolute;bottom:10px;font-size:11px;letter-spacing:.14em;color:var(--tx3)}
+.c1{background:linear-gradient(160deg,#2a2a2a,#0c0c0c)}.c2{background:repeating-linear-gradient(135deg,#181818 0 14px,#232323 14px 28px)}.c3{background:linear-gradient(#f2f2f2,#9a9a9a);color:#000}.c3 svg{color:#000}.c4{background:radial-gradient(circle at 30% 20%,#444,#0a0a0a)}
+details{border-bottom:1px solid var(--bd);padding:20px 0}
+summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary:after{content:"+";color:var(--tx3);transition:.3s}details[open] summary:after{transform:rotate(45deg)}
+details p{color:var(--tx2);margin-top:12px;max-width:680px}
+/* modal */
+dialog{margin:auto;max-width:520px;width:calc(100% - 32px);background:var(--card);color:#fff;border:1px solid var(--bd2);border-radius:20px;padding:30px}
+dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+dialog[open]{animation:up .3s both}
+dialog h3{font-size:24px;letter-spacing:-.02em;margin-bottom:6px}
+dialog p{color:var(--tx2);font-size:15px}
+dialog .x{position:absolute;right:14px;top:14px}
+select{width:100%;margin-top:12px;background:var(--el);border:1px solid var(--bd);border-radius:12px;padding:13px 16px;color:#fff;font:inherit}
+.opt{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--bd);border-radius:14px;padding:16px;background:var(--el)}
+footer{border-top:1px solid var(--bd);padding:64px 0 32px;background:var(--bg2)}
+.fg{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px}
+footer h4{font-size:12px;letter-spacing:.18em;color:var(--tx3);margin-bottom:14px;text-transform:uppercase}
+footer a,footer button.l{display:block;color:var(--tx2);font:400 14px Inter;padding:3px 0;background:none;border:0;cursor:pointer;text-align:left;transition:.2s}footer a:hover,footer button.l:hover{color:#fff}
+.cp{margin-top:48px;padding-top:24px;border-top:1px solid var(--bd);color:var(--tx3);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1)}.rv.v{opacity:1;transform:none}
+.g>.rv:nth-child(3n+2){transition-delay:.08s}.g>.rv:nth-child(3n){transition-delay:.16s}
+@media(max-width:900px){.nl,.nr .dl{display:none}#bg{display:grid}.g{grid-template-columns:1fr 1fr}.sp{grid-template-columns:1fr}.facts .w{grid-template-columns:1fr 1fr}.fc{border-left:0;border-top:1px solid var(--bd);padding:24px 0}.fc:nth-child(-n+2){border-top:0}.caps{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}section{padding:68px 0}.app{grid-template-columns:1fr}.sb{display:none}}
+@media(max-width:560px){.g{grid-template-columns:1fr}.btn{width:100%;justify-content:center}.hero{padding-top:56px}.fg{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}.rv,.in>*{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="ab">BYTEZ is in development. Follow progress and join the community on <a href="#" data-discord>Discord</a><button aria-label="Close" onclick="this.parentNode.remove()">×</button></div>
+<header id="hd"><div class="w nb">
+<a href="#top" class="logo" aria-label="BYTEZ"><svg viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6 4h6.5a4.2 4.2 0 0 1 2.6 7.5A4.4 4.4 0 0 1 13 20H6zM9.5 7.2v3h3a1.5 1.5 0 0 0 0-3zm0 6.3v3.3h3.3a1.65 1.65 0 0 0 0-3.3z"/></svg>BYTEZ</a>
+<nav class="nl" aria-label="Main"><a href="#features">Features</a><a href="#mods">Mods</a><a href="#performance">Performance</a><a href="#plus">BYTEZ+</a><a href="#cosmetics">Cosmetics</a><a href="#community">Community</a><a href="#faq">FAQ</a></nav>
+<div class="nr"><a class="ib" data-discord href="#" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.3 4.4A17 17 0 0 0 16 3l-.2.4a15 15 0 0 1 3.7 1.8 13 13 0 0 0-11-.1A15 15 0 0 1 12.2 3.4L12 3a17 17 0 0 0-4.3 1.4C5 8.5 4.3 12.5 4.6 16.4A17 17 0 0 0 9.8 19l1-1.7a11 11 0 0 1-1.7-.8l.4-.3a12 12 0 0 0 10.2 0l.4.3c-.5.3-1.1.6-1.7.8l1 1.7a17 17 0 0 0 5.2-2.600c.4-4.500-.7-8.500-3.300-12zM9.500 14c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2zm5 0c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2z"/></svg></a>
+<button class="btn p sm dl" data-dl>Download</button>
+<button class="ib" id="bg" aria-label="Menu" aria-expanded="false">☰</button></div>
+</div></header>
+<div id="mm"><a href="#features">Features</a><a href="#mods">Mods</a><a href="#performance">Performance</a><a href="#plus">BYTEZ+</a><a href="#cosmetics">Cosmetics</a><a href="#community">Community</a><a href="#faq">FAQ</a><button class="btn p" data-dl style="margin-top:24px;justify-content:center">Download</button></div>
+
+<main id="top">
+<section class="hero"><div class="w in">
+<span class="chip"><i class="dot"></i>MINECRAFT CLIENT & LAUNCHER</span>
+<h1>BYTEZ<br>Minecraft Client</h1>
+<p class="sub">A modern client built around your versions, your mods and your friends. Play, connect and customize in one launcher.</p>
+<div class="row"><button class="btn p" data-dl>Download for Windows</button><a class="btn" href="#features">Explore Features</a></div>
+<p class="fine">Fully released versions only · Microsoft account and a valid Minecraft license required</p>
+</div>
+<div class="w show"><div class="stage" id="stage">
+<div class="slide a"><div class="win"><div class="tb"><b></b><b></b><b></b><span>BYTEZ LAUNCHER</span></div><div class="app"><div class="sb"><div class="a">Home</div><div>Versions</div><div>Mods</div><div>Friends</div><div>Discover</div><div style="margin-top:auto">Settings</div></div><div class="mn"><div class="ban"><h3>Welcome back</h3><small style="color:var(--tx2)">Ready when you are.</small></div><div class="mr"><div>Minecraft version<small>Fully released versions</small></div><span class="tag">Latest Release ▾</span></div><div class="mr"><div>Mods<small>Manage and update</small></div><span class="tag">Open</span></div><div class="play">PLAY</div></div></div></div></div>
+<div class="slide"><div class="win"><div class="tb"><b></b><b></b><b></b><span>VERSIONS</span></div><div class="mn" style="min-height:392px"><div class="mr sel"><div>Latest Release<small>Example entry</small></div><span class="tag w2">Selected</span></div><div class="mr"><div>1.20.4<small>Example entry</small></div><span class="tag">Installed</span></div><div class="mr"><div>1.12.2<small>Example entry</small></div><span class="tag">Install</span></div><div class="mr"><div>1.8.9<small>Example entry</small></div><span class="tag">Install</span></div><div class="play">PLAY</div></div></div></div>
+<div class="slide"><div class="game"><div class="hud" style="top:14px;left:14px"><b>Alex</b> sent you a message.<br><small style="color:#bbb">Hey, want to play?</small></div><div class="hud" style="top:14px;right:14px">240 FPS · 12 CPS<br>X 128 Y 64 Z -312</div><div class="hud" style="bottom:14px;left:14px"><div class="keys"><span></span><i class="on">W</i><span></span><i>A</i><i>S</i><i>D</i></div></div><div class="hot"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+</div>
+<div class="dots" id="dots"><button class="a" aria-label="Launcher"></button><button aria-label="Versions"></button><button aria-label="In game"></button></div>
+<p class="cap">Illustrative UI mockups. Real screenshots will replace them.</p></div></section>
+
+<section class="facts"><div class="w">
+<div class="fc"><b>1.0 → Latest</b><small>Fully released versions</small></div>
+<div class="fc"><b>Microsoft</b><small>Official sign-in</small></div>
+<div class="fc"><b>€2.50</b><small>BYTEZ+ per month</small></div>
+<div class="fc"><b>Windows</b><small>Launch platform</small></div>
+</div></section>
+
+<section id="features"><div class="w"><span class="lbl">Features</span><h2>Everything in reach.<br>Nothing in the way.</h2><p class="sub">One launcher for the tools you reach for every time you play.</p>
+<div class="g">
+<div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg></div><h3>Version library</h3><p>Launch any supported, fully released Minecraft version and keep each one separate.</p></div>
+<div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M10 4a2 2 0 1 1 4 0v1h4v4h1a2 2 0 1 1 0 4h-1v4h-4v-1a2 2 0 1 0-4 0v1H6v-4H5a2 2 0 1 1 0-4h1V5h4z"/></svg></div><h3>Mod management</h3><p>Browse, install and organize mods per version, with clear compatibility hints.</p></div>
+<div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></div><h3>Crash diagnostics</h3><p>Understand what likely went wrong, which mod is involved and what to try next.</p></div>
+<div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.500 3-5.500 6.500-5.500s6 2 6.500 5.500"/><circle cx="17" cy="9" r="2.500"/></svg></div><h3>Friends & chat</h3><p>See who is online and chat from the main menu or the in-game ESC menu.</p></div>
+<div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.500h.01M7 16.500h.01"/></svg></div><h3>World hosting</h3><p>Open your singleplayer world to friends while you are online and hosting.</p></div>
+<div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.500 8.500-2 5-5 2 2-5z"/></svg></div><h3>Server discovery</h3><p>Find community servers and add them to your list. Sponsored entries are always labeled.</p></div>
+</div></div></section>
+
+<section id="mods" class="bg2"><div class="w sp">
+<div class="rv"><span class="lbl">Mods</span><h2>Mods without the mess.</h2><p class="sub">Pick a version, pick a mod. BYTEZ shows what is installed, what is missing and what conflicts.</p>
+<div class="note">Mods come from third parties and are never assumed safe or compatible. Missing dependencies and conflicts are called out clearly.</div></div>
+<div class="win rv"><div class="tb"><b></b><b></b><b></b><span>MOD MANAGER · EXAMPLES</span></div><div class="mn">
+<div class="mr"><div>Example Mod A<small>MC 1.20.4 · needs Example Library</small></div><span class="tag">Dependency missing</span></div>
+<div class="mr"><div>Example Library<small>MC 1.20.4</small></div><span class="tag">Required</span></div>
+<div class="mr"><div>Example Mod B<small>MC 1.20.4</small></div><span class="tag w2">Installed</span></div>
+<div class="mr"><div>Example Mod C<small>MC 1.20.4 · update available</small></div><span class="tag">Update</span></div></div></div>
+</div></section>
+
+<section id="performance"><div class="w sp">
+<div class="win rv"><div class="tb"><b></b><b></b><b></b><span>BENCHMARKS</span></div><div class="mn"><span class="tag" style="align-self:flex-start">Not published yet</span>
+<div class="bar"><div><span>Vanilla Minecraft</span><span>–</span></div><i></i></div><div class="bar"><div><span>BYTEZ</span><span>–</span></div><i></i></div>
+<p style="font-size:13px;color:var(--tx3)">Placeholder. No numbers are shown until they are measured.</p></div></div>
+<div class="rv"><span class="lbl">Performance</span><h2>Measured,<br>not claimed.</h2><p class="sub">Performance numbers will be published with hardware, settings and method once BYTEZ can be tested publicly.</p></div>
+</div></section>
+
+<section id="plus" class="bg2"><div class="w ct rv"><span class="lbl">BYTEZ+</span><h2>Go further with BYTEZ+.</h2><p class="sub">Premium community themes and extra personalization. €2.50 per month. No gameplay advantages.</p>
+<div class="row" style="margin-top:28px"><button class="btn p" disabled>Available at launch</button></div>
+<p class="fine">Invite friends and earn 3 free weeks of BYTEZ+ when referral conditions are met. Rules will be published before launch.</p></div></section>
+
+<section id="cosmetics"><div class="w"><span class="lbl">Cosmetics</span><h2>Stand out with capes.</h2><p class="sub">Browse, select and manage capes in BYTEZ. Community designs go through moderation before they appear.</p>
+<div class="caps"><div class="cape c1 rv"><svg viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6 4h6.5a4.2 4.2 0 0 1 2.6 7.5A4.4 4.4 0 0 1 13 20H6zM9.5 7.2v3h3a1.5 1.5 0 0 0 0-3zm0 6.3v3.3h3.3a1.65 1.65 0 0 0 0-3.3z"/></svg><span>EXAMPLE DESIGN</span></div><div class="cape c2 rv"><svg viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6 4h6.5a4.2 4.2 0 0 1 2.6 7.5A4.4 4.4 0 0 1 13 20H6zM9.5 7.2v3h3a1.5 1.5 0 0 0 0-3zm0 6.3v3.3h3.3a1.65 1.65 0 0 0 0-3.3z"/></svg><span>EXAMPLE DESIGN</span></div><div class="cape c3 rv"><svg viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6 4h6.5a4.2 4.2 0 0 1 2.6 7.5A4.4 4.4 0 0 1 13 20H6zM9.5 7.2v3h3a1.5 1.5 0 0 0 0-3zm0 6.3v3.3h3.3a1.65 1.65 0 0 0 0-3.3z"/></svg><span style="color:#444">EXAMPLE DESIGN</span></div><div class="cape c4 rv"><svg viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6 4h6.5a4.2 4.2 0 0 1 2.6 7.5A4.4 4.4 0 0 1 13 20H6zM9.5 7.2v3h3a1.5 1.5 0 0 0 0-3zm0 6.3v3.3h3.3a1.65 1.65 0 0 0 0-3.3z"/></svg><span>EXAMPLE DESIGN</span></div></div></div></section>
+
+<section id="community" class="bg2"><div class="w ct rv"><span class="lbl">Community</span><h2>Player voices.<br>Coming soon.</h2><p class="sub">Real feedback from real players will appear here after launch. No invented reviews.</p>
+<div class="row" style="margin-top:28px"><a class="btn" data-discord href="#">Join the Discord</a></div></div></section>
+
+<section id="download"><div class="w ct rv"><span class="lbl">Download</span><h2>Ready to play differently?</h2><p class="sub">Official release planned for 01.01.2027. Sign in with your Microsoft account. BYTEZ is not a cracked launcher.</p>
+<div class="row" style="margin-top:28px"><button class="btn p" data-dl>Download for Windows</button></div></div></section>
+
+<section id="faq" class="bg2"><div class="w"><span class="lbl">FAQ</span><h2>Questions.</h2><div style="margin-top:36px">
+<details><summary>Do I need to own Minecraft?</summary><p>Yes. BYTEZ requires a valid Minecraft license and official Microsoft authentication. It is not a cracked launcher.</p></details>
+<details><summary>Which versions are supported?</summary><p>BYTEZ is designed for fully released versions from 1.0 to the latest official release. Snapshots are not supported.</p></details>
+<details><summary>Does a hosted world stay online?</summary><p>Only while its owner is online and hosting. It is not a 24/7 server.</p></details>
+<details><summary>How much is BYTEZ+?</summary><p>€2.50 per month. The main client is intended to be available separately from the optional subscription.</p></details>
+<details><summary>Is BYTEZ affiliated with Mojang or Microsoft?</summary><p>No. BYTEZ is an independent third-party client.</p></details></div></div></section>
+
+<section><div class="w ct rv"><span class="lbl">Server partners</span><h2>Own a Minecraft server?</h2><p class="sub">Reach new players through Discover. Partnered listings are always clearly labeled.</p>
+<div class="row" style="margin-top:28px"><a class="btn" id="pt" href="#">Become a partner</a></div></div></section>
+</main>
+
+<footer><div class="w"><div class="fg">
+<div><a href="#top" class="logo">BYTEZ</a><p style="color:var(--tx2);font-size:14px;margin-top:12px">Play. Connect. Customize.</p></div>
+<div><h4>Product</h4><a href="#features">Features</a><a href="#mods">Mods</a><a href="#plus">BYTEZ+</a><a href="#download">Download</a></div>
+<div><h4>Community</h4><a data-discord href="#">Discord</a><a href="#community">Reviews</a><a href="#faq">FAQ</a></div>
+<div><h4>Legal</h4><button class="l" data-legal="Privacy Policy">Privacy Policy</button><button class="l" data-legal="Terms of Service">Terms of Service</button><button class="l" data-legal="Imprint">Imprint</button></div>
+</div><div class="cp"><span>© 2026 BYTEZ. All rights reserved.</span><span>Independent. Not affiliated with Minecraft, Mojang or Microsoft.</span></div></div></footer>
+
+<dialog id="dm"><button class="ib x" onclick="dm.close()" aria-label="Close">✕</button>
+<h3>Choose how you want to play</h3><p>BYTEZ is not released yet.</p>
+<div class="opt"><div><b>Launcher for Windows</b><br><small style="color:var(--tx3)" id="dv">Version TBA</small></div><a class="btn p sm" id="dl" href="#" aria-disabled="true">Not available yet</a></div>
+<select disabled aria-label="Minecraft version"><option>Minecraft version: available at release</option></select>
+<p style="font-size:13px;margin-top:14px">SHA-256: <span id="sh">published at release</span></p></dialog>
+<dialog id="lg"><button class="ib x" onclick="lg.close()" aria-label="Close">✕</button><h3 id="lt"></h3><p>Placeholder. Legal text must be written from actual, reviewed information before publication. No company details have been invented.</p></dialog>
+
+<script>
+/* ===== CONFIG: echte Daten hier eintragen ===== */
+const CONFIG={discord:"https://discord.gg/Nrgn6FeqfB",email:"",downloadUrl:"",sha256:"",version:"",releaseDate:"2027-01-01"};
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+$$('[data-discord]').forEach(a=>{if(CONFIG.discord){a.href=CONFIG.discord;a.target='_blank';a.rel='noopener'}else a.addEventListener('click',e=>{e.preventDefault();alert('Discord invite is not published yet (CONFIG.discord).')})});
+const pt=$('#pt');if(CONFIG.email)pt.href='mailto:'+CONFIG.email+'?subject=Server%20partnership';else pt.addEventListener('click',e=>{e.preventDefault();alert('Partner contact is not published yet (CONFIG.email).')});
+const live=CONFIG.downloadUrl&&new Date()>=new Date(CONFIG.releaseDate);
+if(live){const d=$('#dl');d.href=CONFIG.downloadUrl;d.textContent='Download for Windows';d.removeAttribute('aria-disabled');$('#dv').textContent='Version '+(CONFIG.version||'');$('#sh').textContent=CONFIG.sha256||'see release notes'}
+$$('[data-dl]').forEach(b=>b.onclick=()=>{$('#mm').classList.remove('o');dm.showModal()});
+$$('[data-legal]').forEach(b=>b.onclick=()=>{$('#lt').textContent=b.dataset.legal;lg.showModal()});
+[dm,lg].forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+$('#bg').onclick=()=>{const o=$('#mm').classList.toggle('o');$('#bg').setAttribute('aria-expanded',o);$('#bg').textContent=o?'✕':'☰'};
+$$('#mm a').forEach(a=>a.onclick=()=>{$('#mm').classList.remove('o');$('#bg').textContent='☰'});
+addEventListener('scroll',()=>$('#hd').classList.toggle('s',scrollY>20),{passive:true});
+/* showcase slider */
+const sl=$$('.slide'),dt=$$('#dots button');let cur=0,tm;
+function go(i){cur=i;sl.forEach((s,k)=>s.classList.toggle('a',k===i));dt.forEach((d,k)=>d.classList.toggle('a',k===i))}
+function run(){clearInterval(tm);if(!matchMedia('(prefers-reduced-motion:reduce)').matches)tm=setInterval(()=>go((cur+1)%sl.length),5000)}
+dt.forEach((d,i)=>d.onclick=()=>{go(i);run()});$('#stage').onmouseenter=()=>clearInterval(tm);$('#stage').onmouseleave=run;run();
+/* reveal + card spotlight */
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');io.unobserve(x.target)}}),{threshold:.12});
+$$('.rv').forEach(el=>io.observe(el));
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}});
+</script>
+</body>
+</html>
